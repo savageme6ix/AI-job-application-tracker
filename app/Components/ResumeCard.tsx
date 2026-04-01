@@ -4,6 +4,7 @@ import ScoreCircle from './ScoreCircle';
 const ResumeCard = ({resume} : {resume: Resume}) => {
   return (
     <Link to={`/resume/${resume.id}`} className='resume-card animate-in fade-in duration-1000ms'>
+    <div className='resume-card-header'>
         <div className='flex flex-col gap-2'>
             <h2 className='!text-black font-bold break-words'>
                 {resume.companyName}
@@ -13,9 +14,11 @@ const ResumeCard = ({resume} : {resume: Resume}) => {
             </h3>
         </div> 
 
-        <div className='flex-shrink-0'>
+         <div className='flex-shrink-0'>
             <ScoreCircle score={resume.feedback.overallScore} />
-        </div>
+         </div>
+    </div>
+       
     </Link>
   )
 }
