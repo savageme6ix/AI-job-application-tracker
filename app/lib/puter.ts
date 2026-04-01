@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// Tell typescript to ignore puter not being part of default window object //
 declare global {
   interface Window {
     puter: {
@@ -89,24 +90,31 @@ interface PuterStore {
       pattern: string,
       returnValues?: boolean
     ) => Promise<string[] | KVItem[] | undefined>;
-    flush: () => Promise<boolean | undefined>;
+    flush: () => Promise<boolean | undefined>; // Remove content //
   };
 
   init: () => void;
   clearError: () => void;
 }
 
+// When getting puter, check wether or not user is in a browser //
 const getPuter = (): typeof window.puter | null =>
   typeof window !== "undefined" && window.puter ? window.puter : null;
 
 export const usePuterStore = create<PuterStore>((set, get) => {
+  // Emergency Protocol tells the user what went wrong, and it cleans up the mess so the app doesn't stay stuck //
   const setError = (msg: string) => {
+    // Save this new state to clean up error mess //
     set({
       error: msg,
       isLoading: false,
       auth: {
         user: null,
         isAuthenticated: false,
+        // Auth is a nested object and zustand is dum so we have to rewrite thee propertes since if we only set the relevant once zustand
+        //  will replace the whole auth bucket with only what weve changed
+        // we dont say isAuthenticated: get().auth.isAuthenticated because this is data that has to be reset to a safe point upon an error
+        // but these other ones are functions and they stay the same regardless. Just tools
         signIn: get().auth.signIn,
         signOut: get().auth.signOut,
         refreshUser: get().auth.refreshUser,
@@ -175,8 +183,10 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     set({ isLoading: true, error: null });
 
     try {
-      await puter.auth.signIn();
-      await checkAuthStatus();
+      await puter.auth.signIn(); // Tell the cloud: "Open the login window and wait."
+
+      // we already defined this function above which rewrites the auth bucket so we dont need to but rather just call it
+      await checkAuthStatus(); // Once they finish, run the "Question" to see if it worked.
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Sign in failed";
       setError(msg);
@@ -241,7 +251,9 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
   };
 
+  // handles the fact that Puter might not be ready the exact millisecond the app starts
   const init = (): void => {
+    // The first check
     const puter = getPuter();
     if (puter) {
       set({ puterReady: true });
@@ -249,6 +261,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       return;
     }
 
+    //Runs every 100ms if puter is not found in first try
     const interval = setInterval(() => {
       if (getPuter()) {
         clearInterval(interval);
@@ -257,6 +270,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       }
     }, 100);
 
+    // this function is ran after 10s to cue puter hasnt been found completley
     setTimeout(() => {
       clearInterval(interval);
       if (!getPuter()) {
