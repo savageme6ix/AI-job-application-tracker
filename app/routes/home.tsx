@@ -17,5 +17,6 @@ export default function Home() {
         <h2>Review your submissions and check AI-powered feedback</h2>
       </div>
     </section>
+
   </main>;
 }
