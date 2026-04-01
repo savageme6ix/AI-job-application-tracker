@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import Navbar from "~/Components/Navbar";
 
 export function meta({}: Route.MetaArgs) {
   return [
