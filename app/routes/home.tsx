@@ -17,17 +17,12 @@ export default function Home() {
   //if user is in the home page and isnt authenticated
   //send them to the login page and the back aftr
   const auth = usePuterStore((state) => state.auth);
-  const isLoading = usePuterStore((state)=> state.isLoading);
   const navigate = useNavigate();
 
   useEffect(()=>{
-    if(!isLoading && !auth.isAuthenticated) navigate('/auth?next=/')
-  },[auth.isAuthenticated, isLoading, navigate]);
+    if(!auth.isAuthenticated) navigate('/auth?next=/')
+  },[auth.isAuthenticated, navigate]);
 
-  if(isLoading){
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
-  }
-  
   return <main className="bg-[url('/images/bg-main.svg')] bg-cover">
     <Navbar />
     <section className="main-section">
