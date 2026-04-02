@@ -27,6 +27,7 @@ export default function Home() {
   if(isLoading){
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
+  
   return <main className="bg-[url('/images/bg-main.svg')] bg-cover">
     <Navbar />
     <section className="main-section">
