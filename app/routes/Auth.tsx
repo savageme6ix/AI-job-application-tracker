@@ -1,4 +1,5 @@
 import type { Route } from "./+types/auth";
+import { usePuterStore } from "~/lib/puter";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -7,6 +8,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 const Auth = () => {
+  const isLoading = usePuterStore((state) => state.isLoading);
+  const auth = usePuterStore((state) => state.auth);
   return (
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
       <div className="gradient-border shadow-lg">
@@ -14,6 +17,25 @@ const Auth = () => {
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1>Welcome</h1>
                 <h2>Log in to Continue Your Job Journey</h2>
+              </div>
+              <div>
+                {isLoading ? (
+                  <button className="auth-button animate-pulse">
+                      <p>Signing you in...</p>
+                  </button>
+                ): (
+                  <>
+                  {auth.isAuthenticated ? (
+                    <button className="auth-button" onClick={auth.signOut}>
+                      <p>Log Out</p>
+                    </button>
+                  ) : (
+                      <button className="auth-button" onClick={auth.signIn}>
+                          <p>Log in</p>
+                      </button>
+                  )}
+                  </>
+                )}
               </div>
           </section>
       </div>
