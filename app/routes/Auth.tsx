@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import type { Route } from "./+types/auth";
 import { usePuterStore } from "~/lib/puter";
+import { useLocation, useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +12,15 @@ export function meta({}: Route.MetaArgs) {
 const Auth = () => {
   const isLoading = usePuterStore((state) => state.isLoading);
   const auth = usePuterStore((state) => state.auth);
+  const location = useLocation();
+  // Redirection post-login
+  const next = location.search.split('next=')[1];
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(auth.isAuthenticated) navigate(next)
+  },[auth.isAuthenticated, next])
+
   return (
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
       <div className="gradient-border shadow-lg">
