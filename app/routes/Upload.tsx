@@ -1,6 +1,14 @@
+import type { Route } from "./+types/home";
 import Navbar from "~/Components/Navbar";
 import{useState} from 'react';
 import FileUploader from "~/Components/FileUploader";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Upload" },
+    { name: "description", content: "Upload your resume" },
+  ];
+}
 
 const Upload = () => {
     const[isProcessing,setIsProcessing] = useState(false);
