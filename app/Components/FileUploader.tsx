@@ -21,16 +21,16 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
     if(file){
 
     try {
-        const path = './Resumind';
+        const path = '/resumes';
         await fs.mkdir(path, { recursive: true });
-        const res = await fs.upload(acceptedFiles);
+        const res = await fs.upload(acceptedFiles, path);
         console.log(res)
 
       } catch (error: any) {
         console.error("Error", error.message);
       }
     }
-  }, [onFileSelect]);
+  }, [onFileSelect,fs]);
 
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ 
     onDrop,
