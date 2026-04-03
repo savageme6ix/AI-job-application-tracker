@@ -21,16 +21,23 @@ const Upload = () => {
         setFile(file)
     }
 
+    const handleAnalyze = async({companyName,jobTitle,jobDescription,file}: {companyName:string,jobTitle:string,jobDescription:string,file:File})=>{
+
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         const form = e.currentTarget.closest('form');
         if(!form) return;
         const formData = new FormData(form);
 
-        const companyName = formData.get('company-name');
-        const jobTitle = formData.get('job-title');
-        const jobDescription = formData.get('job-description');
+        const companyName = formData.get('company-name') as string
+        const jobTitle = formData.get('job-title') as string
+        const jobDescription = formData.get('job-description') as string
         
+        if(!file) return;
+
+        handleAnalyze({companyName,jobTitle,jobDescription,file});
     }
   return (
   <main className="bg-[url('/images/bg-main.svg')] bg-cover">
