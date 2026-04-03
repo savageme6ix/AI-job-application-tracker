@@ -8,7 +8,6 @@ interface FileUploaderProps{
 }
 
 const FileUploader = ({onFileSelect} : FileUploaderProps) => {
-   const [file, setFile] = useState(false)
    const fs = usePuterStore((state) => state.fs);
     
   // 1. Move the hook logic directly into the main component
@@ -30,13 +29,15 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
       }
   }, [onFileSelect]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ 
     onDrop,
     accept: { 'application/pdf': ['.pdf'] }, // Best practice: Only allow PDFs 
     multiple: false, // only  one resume at a time
     maxSize: 20 * 1024 * 1024,
   });
 
+  const file = acceptedFiles[0] || null;
+  
   return (
     <div className="w-full gradient-border p-4 cursor-pointer">
       <div {...getRootProps()}>
