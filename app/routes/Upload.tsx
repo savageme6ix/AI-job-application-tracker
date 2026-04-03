@@ -30,9 +30,7 @@ const Upload = () => {
         const companyName = formData.get('company-name');
         const jobTitle = formData.get('job-title');
         const jobDescription = formData.get('job-description');
-        console.log({
-            companyName,file
-        })
+        
     }
   return (
   <main className="bg-[url('/images/bg-main.svg')] bg-cover">

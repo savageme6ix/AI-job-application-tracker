@@ -23,7 +23,6 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
         const path = 'resumes';
         await fs.mkdir(path, { recursive: true });
         const res = await fs.upload(acceptedFiles, path);
-        console.log(res)
 
       } catch (error: any) {
         console.error("Error", error.message);
