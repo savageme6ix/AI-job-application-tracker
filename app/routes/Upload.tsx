@@ -15,6 +15,11 @@ const Upload = () => {
     const fs = usePuterStore((state) => state.fs);
     const[isProcessing,setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
+    const [file,setFile] = useState<File | null>()
+
+    const handleFileSelect=(file:File | null)=>{
+        setFile(file)
+    }
 
     const handleSubmit = async ()=>{
         
@@ -69,7 +74,7 @@ const Upload = () => {
                     </div>
                     <div className="form-div">
                         <label htmlFor="uploader">Upload Resume</label>
-                        <FileUploader />
+                        <FileUploader onFileSelect={handleFileSelect}/>
                     </div>
                     <button className="primary-button" type="submit">
                         Analyze Resume

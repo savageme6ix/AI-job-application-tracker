@@ -3,13 +3,18 @@ import React, { useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useState } from 'react';
 
-const FileUploader = () => {
+interface FileUploaderProps{
+  onFileSelect ? : (file: File | null) => void;
+}
+
+const FileUploader = ({onFileSelect} : FileUploaderProps) => {
    const [file, setFile] = useState(false)
    const fs = usePuterStore((state) => state.fs);
     
   // 1. Move the hook logic directly into the main component
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
+    const file = acceptedFiles[0] || null;
+    onFileSelect ? (file)
     // Do something with the files
     try {
     
@@ -23,12 +28,13 @@ const FileUploader = () => {
       } catch (error: any) {
         console.error("Error", error.message);
       }
-  }, []);
+  }, [onFileSelect]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop,
     accept: { 'application/pdf': ['.pdf'] }, // Best practice: Only allow PDFs 
-    multiple: false // only  one resume at a time
+    multiple: false, // only  one resume at a time
+    maxSize: 20 * 1024 * 1024,
   });
 
   return (
