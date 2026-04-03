@@ -10,7 +10,7 @@ const FileUploader = () => {
     console.log(acceptedFiles);
     // Do something with the files
     try {
-
+      
         if (!fs) throw new Error("File system not initialized!");
 
       const res = await fs.upload(acceptedFiles);

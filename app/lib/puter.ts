@@ -19,6 +19,7 @@ declare global {
         upload: (file: File[] | Blob[]) => Promise<FSItem>;
         delete: (path: string) => Promise<void>;
         readdir: (path: string) => Promise<FSItem[] | undefined>;
+        mkdir: (path: string, options?: { recursive?: boolean }) => Promise<any>;
       };
       ai: {
         chat: (
@@ -65,7 +66,7 @@ interface PuterStore {
     upload: (file: File[] | Blob[]) => Promise<FSItem | undefined>;
     delete: (path: string) => Promise<void>;
     readDir: (path: string) => Promise<FSItem[] | undefined>;
-  };
+    mkdir: (path: string, options?: { recursive?: boolean }) => Promise<any>;};
   ai: {
     chat: (
       prompt: string | ChatMessage[],
@@ -297,6 +298,16 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     return puter.fs.readdir(path);
   };
 
+  const mkDir = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.mkdir(path, { recursive: true } ); // recursive...if a folder doesnt exist create it automatically
+};
+
+
   const readFile = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
@@ -442,6 +453,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       write: (path: string, data: string | File | Blob) => write(path, data),
       read: (path: string) => readFile(path),
       readDir: (path: string) => readDir(path),
+      mkdir: (path: string) => mkDir(path),
       upload: (files: File[] | Blob[]) => upload(files),
       delete: (path: string) => deleteFile(path),
     },
