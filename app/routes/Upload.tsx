@@ -3,6 +3,7 @@ import { usePuterStore } from '~/lib/puter';
 import Navbar from "~/Components/Navbar";
 import{useState} from 'react';
 import FileUploader from "~/Components/FileUploader";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,6 +14,7 @@ export function meta({}: Route.MetaArgs) {
 
 const Upload = () => {
     const fs = usePuterStore((state) => state.fs);
+    const navigate = useNavigate();
     const[isProcessing,setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
     const [file,setFile] = useState<File | null>()
@@ -27,6 +29,10 @@ const Upload = () => {
         await fs.mkdir(path, { recursive: true });
         setStatusText('Uploading the file...');
         const uploadedFile: any = await fs.upload([file],path)
+
+        if(!uploadedFile) return setStatusText('Error: Failed to upload file');
+        setStatusText('Converting to image...');
+        // const imageFile = await convertPdfToImage(file);
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
