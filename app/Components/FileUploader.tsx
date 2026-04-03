@@ -21,7 +21,7 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
     if(file){
 
     try {
-        const path = '/resumes';
+        const path = 'resumes';
         await fs.mkdir(path, { recursive: true });
         const res = await fs.upload(acceptedFiles, path);
         console.log(res)
@@ -74,7 +74,7 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
                 <img src='/icons/info.svg' alt='upload' className='size-20'/>
              </div>
               <p className='text-lg text-gray-500'>
-                <span className='font-semi-bold'>
+                <span className='font-semibold'>
                   Click to upload
                 </span> or drag and drop
               </p>
