@@ -22,7 +22,11 @@ const Upload = () => {
     }
 
     const handleAnalyze = async({companyName,jobTitle,jobDescription,file}: {companyName:string,jobTitle:string,jobDescription:string,file:File})=>{
-
+        setIsProcessing(true);
+        const path = 'resumes';
+        await fs.mkdir(path, { recursive: true });
+        setStatusText('Uploading the file...');
+        const uploadedFile: any = await fs.upload([file],path)
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
