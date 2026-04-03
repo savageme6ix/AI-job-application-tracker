@@ -4,6 +4,7 @@ import Navbar from "~/Components/Navbar";
 import{useState} from 'react';
 import FileUploader from "~/Components/FileUploader";
 import { useNavigate } from "react-router";
+import { convertPdfToImage } from "~/lib/pdftoImage";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -28,11 +29,16 @@ const Upload = () => {
         const path = 'resumes';
         await fs.mkdir(path, { recursive: true });
         setStatusText('Uploading the file...');
-        const uploadedFile: any = await fs.upload([file],path)
+        const uploadedFile = await fs.upload([file],path)
 
         if(!uploadedFile) return setStatusText('Error: Failed to upload file');
         setStatusText('Converting to image...');
-        // const imageFile = await convertPdfToImage(file);
+        const imageFile = await convertPdfToImage(file);
+        if(!imageFile.file) return setStatusText('Error: Failed to convert pdf to image');
+        setStatusText('Uploading image...');
+        const uploadedImage = await fs.upload([imageFile.file],path);
+        if(!uploadedImage) return setStatusText('Error: Failed to upload image');
+        setStatusText('Preparing data...');
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
