@@ -33,11 +33,11 @@ const FileUploader = () => {
     <div className="w-full gradient-border p-4 cursor-pointer">
       <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
+      <div className='spac-y-4 cursor-pointer'>
+          <div className='mx-auto w-16 h-16 flex items-center justify-center'>
+            <img src='/icons/info.svg' alt='upload' className='size-20'/>
+          </div>
+      </div>
     </div>
     </div>
   );
