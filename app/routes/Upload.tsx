@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import { usePuterStore } from '~/lib/puter';
 import Navbar from "~/Components/Navbar";
 import{useState} from 'react';
 import FileUploader from "~/Components/FileUploader";
@@ -11,11 +12,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 const Upload = () => {
+    const fs = usePuterStore((state) => state.fs);
     const[isProcessing,setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
 
-    const handleSubmit = ()=>{
-
+    const handleSubmit = async ()=>{
+        
     }
   return (
   <main className="bg-[url('/images/bg-main.svg')] bg-cover">
