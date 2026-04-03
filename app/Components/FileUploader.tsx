@@ -1,7 +1,6 @@
 import { usePuterStore } from '~/lib/puter';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useState } from 'react';
 import { formatSize } from '~/lib/utils';
 
 interface FileUploaderProps{
@@ -60,9 +59,9 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
                  </p>
               </div>
               </div>
-              <button className='p-2 cursor-pointer' onClick={(e)=>{
+              <button className='p-2 cursor-pointer'  onClick={(e)=>{
                 e.stopPropagation();
-                onFileSelect?.(null)
+                onFileSelect?.(null);
               }}
               >
                 <img src="/icons/cross.svg" alt='remove' className='w-4 h-4'/>
