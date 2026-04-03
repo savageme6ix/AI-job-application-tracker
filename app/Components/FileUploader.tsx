@@ -8,33 +8,35 @@ interface FileUploaderProps{
   onFileSelect ? : (file: File | null) => void;
 }
 
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
+
 const FileUploader = ({onFileSelect} : FileUploaderProps) => {
    const fs = usePuterStore((state) => state.fs);
     
   // 1. Move the hook logic directly into the main component
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0] || null;
-    onFileSelect ? (file)
+    onFileSelect ?. (file)
     // Do something with the files
-    try {
-    
-        const path = './Resumind';
-        if (!fs) throw new Error("File system not initialized!");
+    if(file){
 
+    try {
+        const path = './Resumind';
         await fs.mkdir(path, { recursive: true });
-      const res = await fs.upload(acceptedFiles);
-      console.log(res)
-        
+        const res = await fs.upload(acceptedFiles);
+        console.log(res)
+
       } catch (error: any) {
         console.error("Error", error.message);
       }
+    }
   }, [onFileSelect]);
 
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ 
     onDrop,
     accept: { 'application/pdf': ['.pdf'] }, // Best practice: Only allow PDFs 
     multiple: false, // only  one resume at a time
-    maxSize: 20 * 1024 * 1024,
+    maxSize: MAX_FILE_SIZE,
   });
 
   const file = acceptedFiles[0] || null;
@@ -43,7 +45,7 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
     <div className="w-full gradient-border p-4 cursor-pointer">
       <div {...getRootProps()}>
       <input {...getInputProps()} />
-      <div className='spac-y-4 cursor-pointer'>
+      <div className='space-y-4 cursor-pointer'>
           
           {file ?(
             <div className='uploader-selected-file' onClick={(e)=>e.stopPropagation()}>
@@ -58,8 +60,10 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
                  </p>
               </div>
               </div>
-              <button className='p-2 cursor-pointer' onClick={(e)=>
-                onFileSelect?.(null)}
+              <button className='p-2 cursor-pointer' onClick={(e)=>{
+                e.stopPropagation();
+                onFileSelect?.(null)
+              }}
               >
                 <img src="/icons/cross.svg" alt='remove' className='w-4 h-4'/>
               </button>
@@ -75,7 +79,7 @@ const FileUploader = ({onFileSelect} : FileUploaderProps) => {
                 </span> or drag and drop
               </p>
               <p className='text-lg text-gray-500'>
-                  PDF (max {formatSize(maxFileSize)})
+                  PDF (max {formatSize(MAX_FILE_SIZE)})
               </p>
             </div>
           )}
