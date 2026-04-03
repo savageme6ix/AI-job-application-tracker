@@ -1,11 +1,24 @@
-import React, { useCallback } from 'react';
+import { usePuterStore } from '~/lib/puter';
+import React, { useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const FileUploader = () => {
+   const fs = usePuterStore((state) => state.fs);
+    
   // 1. Move the hook logic directly into the main component
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     console.log(acceptedFiles);
     // Do something with the files
+    try {
+
+        if (!fs) throw new Error("File system not initialized!");
+
+      const res = await fs.upload(acceptedFiles);
+      console.log(res)
+        
+      } catch (error: any) {
+        console.error("Error", error.message);
+      }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
