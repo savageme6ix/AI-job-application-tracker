@@ -10,9 +10,11 @@ const FileUploader = () => {
     console.log(acceptedFiles);
     // Do something with the files
     try {
-      
+    
+        const path = './Resumind';
         if (!fs) throw new Error("File system not initialized!");
 
+        await fs.mkdir(path, { recursive: true });
       const res = await fs.upload(acceptedFiles);
       console.log(res)
         
