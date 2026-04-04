@@ -16,6 +16,7 @@ export function meta({}: Route.MetaArgs) {
 
 const Upload = () => {
     const fs = usePuterStore((state) => state.fs);
+    const kv = usePuterStore((state) => state.kv);
     const navigate = useNavigate();
     const[isProcessing,setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
@@ -43,8 +44,14 @@ const Upload = () => {
 
         const uuid: any = generateUUID();
         const data ={
-            id:uuid
+            id:uuid,
+            resumePath: uploadedFile.path,
+            imagePath: uploadedImage.path,
+            companyName,jobTitle,jobDescription,
+            feedback: '',
         }
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
+        setStatusText('Analyzing...');
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
