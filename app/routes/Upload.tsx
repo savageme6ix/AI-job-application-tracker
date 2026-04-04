@@ -60,9 +60,11 @@ const Upload = () => {
             prepareInstructions({jobTitle,jobDescription})
         
         )
-        if(!feedback) return setStatusText('Error: Failed to anlyze resume');
+        if(!feedback) return setStatusText('Error: Failed to analyze resume');
         const feedbackText = feedback.message.content === 'string' ? 
         feedback.message.content : feedback.message.content[0].text;
+
+        data.feedback = JSON.parse(feedbackText)
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
