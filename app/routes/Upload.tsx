@@ -6,6 +6,7 @@ import FileUploader from "~/Components/FileUploader";
 import { useNavigate } from "react-router";
 import { convertPdfToImage } from "~/lib/pdftoImage";
 import { generateUUID } from "~/lib/utils";
+import { prepareInstructions } from "constants";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,6 +18,7 @@ export function meta({}: Route.MetaArgs) {
 const Upload = () => {
     const fs = usePuterStore((state) => state.fs);
     const kv = usePuterStore((state) => state.kv);
+    const ai = usePuterStore((state) => state.ai);
     const navigate = useNavigate();
     const[isProcessing,setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
@@ -52,6 +54,15 @@ const Upload = () => {
         }
         await kv.set(`resume:${uuid}`, JSON.stringify(data));
         setStatusText('Analyzing...');
+
+        const feedback = await ai.feedback(
+            uploadedFile.path,
+            prepareInstructions({jobTitle,jobDescription})
+        
+        )
+        if(!feedback) return setStatusText('Error: Failed to anlyze resume');
+        const feedbackText = feedback.message.content === 'string' ? 
+        feedback.message.content : feedback.message.content[0].text;
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
