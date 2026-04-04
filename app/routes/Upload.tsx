@@ -5,6 +5,7 @@ import{useState} from 'react';
 import FileUploader from "~/Components/FileUploader";
 import { useNavigate } from "react-router";
 import { convertPdfToImage } from "~/lib/pdftoImage";
+import { generateUUID } from "~/lib/utils";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -39,6 +40,11 @@ const Upload = () => {
         const uploadedImage = await fs.upload([imageFile.file],path);
         if(!uploadedImage) return setStatusText('Error: Failed to upload image');
         setStatusText('Preparing data...');
+
+        const uuid: any = generateUUID();
+        const data ={
+            id:uuid
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
