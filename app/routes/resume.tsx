@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router";
-import type { Route } from "./+types/auth";
+import type { Route } from "./+types/Resume";
 import { useEffect, useState } from "react";
 import { usePuterStore } from "~/lib/puter";
 import { resumeAndPrerender } from "react-dom/static";
@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const resume = () => {
+const Resume = () => {
   const {auth,isLoading,fs,kv} = usePuterStore();
   const { id } = useParams();
   const [imageUrl,setImageUrl] = useState('');
@@ -32,7 +32,16 @@ const resume = () => {
 
       const pdfBlob = new Blob([resumeBlob], {type: 'application/pdf'});
       const resumeURL = URL.createObjectURL(pdfBlob);
+      setResumeUrl(resumeURL);
+
+      const imageBlob = await fs.read(data.imagePath);
+      if(!imageBlob) return;
+      const imageURL = URL.createObjectURL(imageBlob);
+      setImageUrl(imageURL);
+
+      setFeedback(data.feedback)
     }
+    loadResume();
   },[id])
 
   return (
@@ -44,10 +53,16 @@ const resume = () => {
         </Link>
       </nav>
       <div className="flex flex-row w-full max-lg:flex-col-reverse">
-        <section className="feedback-section">
+        <section className="feedback-section bg-[url('/images/bg-small.svg') bg-cover h-[100vh] sticky top-0 items-center justify-center]">
           {imageUrl && resumeUrl && (
             <div className=" animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-2xl:h-fit w-fit">
-
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={imageUrl}
+                  className="w-full h-full object-contain rounded-2xl"
+                  title="resume"
+                />
+              </a>
             </div>
           )}
 
@@ -58,4 +73,4 @@ const resume = () => {
   )
 }
 
-export default resume
+export default Resume
