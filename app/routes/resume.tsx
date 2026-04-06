@@ -1,6 +1,6 @@
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import type { Route } from "./+types/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePuterStore } from "~/lib/puter";
 import { resumeAndPrerender } from "react-dom/static";
 
@@ -14,6 +14,10 @@ export function meta({}: Route.MetaArgs) {
 const resume = () => {
   const {auth,isLoading,fs,kv} = usePuterStore();
   const { id } = useParams();
+  const [imageUrl,setImageUrl] = useState('');
+  const [resumeUrl, setResumeUrl] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const loadResume = async()=>{
@@ -22,7 +26,12 @@ const resume = () => {
       if(!resume) return;
 
       const data = JSON.parse(resume);
-      
+
+      const resumeBlob = await fs.read(data.resumePath);
+      if(!resumeBlob) return;
+
+      const pdfBlob = new Blob([resumeBlob], {type: 'application/pdf'});
+      const resumeURL = URL.createObjectURL(pdfBlob);
     }
   },[id])
 
