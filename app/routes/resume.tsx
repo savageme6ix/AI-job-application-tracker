@@ -1,7 +1,11 @@
-
+import { useParams } from "react-router"
 const resume = () => {
+  const { id } = useParams();
   return (
-    <div>resume</div>
+    
+    <div>
+      Resume {id}
+    </div>
   )
 }
 
