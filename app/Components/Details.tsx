@@ -118,7 +118,7 @@ export default function Details({ feedback }: { feedback: Feedback }) {
       
       <div className="mt-8 p-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white text-center">
         <h3 className="font-bold text-lg mb-1">Ready to apply?</h3>
-        <p className="text-blue-100 text-sm">Follow these tips to get closer to that Safaricom interview!</p>
+        <p className="text-blue-100 text-sm">Follow these tips to get closer to that interview!</p>
       </div>
     </div>
   );
