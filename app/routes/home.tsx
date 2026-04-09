@@ -26,15 +26,7 @@ export default function Home() {
     if(!isLoading && !auth.isAuthenticated) navigate('/auth?next=/')
   },[auth.isAuthenticated, navigate, isLoading]);
 
-  useEffect(()=>{
-    const loadResume: ()=> Promise<void> = async()=>{
-      const blob = await fs.read(resume.imagePath);
-      if(!blob) return;
-      let url:string = URL.createObjectURL(blob)
-      setResumeUrl(url)
-    }
-    loadResume();
-  },[resume.imagePath])
+ 
   
   if(isLoading){
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
