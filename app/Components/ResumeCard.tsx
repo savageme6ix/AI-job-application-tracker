@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 const ResumeCard = ({resume} : {resume: Resume}) => {
-    const {fs} = usePuterStore();
-    const [resumeUrl, setResumeUrl] = useState('')
+    const {fs,kv} = usePuterStore();
+    const [resumeUrl, setResumeUrl] = useState('');
+    const [resumes, setResumes] = useState<Resume[]>([]);
+    const [loadingResume, setLoadingResume] = useState();
 
   useEffect(()=>{
     const loadResume: ()=> Promise<void> = async()=>{
