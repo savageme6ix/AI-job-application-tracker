@@ -8,7 +8,22 @@ const ResumeCard = ({resume} : {resume: Resume}) => {
     const {fs,kv} = usePuterStore();
     const [resumeUrl, setResumeUrl] = useState('');
     const [resumes, setResumes] = useState<Resume[]>([]);
-    const [loadingResume, setLoadingResume] = useState();
+    const [loadingResume, setLoadingResume] = useState(false);
+
+    useEffect(()=>{
+        const loadResumes = async()=>{
+            setLoadingResume(true)
+
+            const resumes = (await kv.list('resumes:*', true)) as KVItem[];
+
+            const parsedResumes = resumes?.map((resume)=>{
+               return JSON.parse(resume.value) as Resume;
+            })
+            setResumes(parsedResumes || [] );
+            setLoadingResume(false);
+        }
+        loadResumes();
+    },[])
 
   useEffect(()=>{
     const loadResume: ()=> Promise<void> = async()=>{
