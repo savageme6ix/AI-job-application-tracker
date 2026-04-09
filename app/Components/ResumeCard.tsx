@@ -5,35 +5,20 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 const ResumeCard = ({resume} : {resume: Resume}) => {
-    const {fs,kv} = usePuterStore();
-    const [resumeUrl, setResumeUrl] = useState('');
-    const [resumes, setResumes] = useState<Resume[]>([]);
-    const [loadingResume, setLoadingResume] = useState(false);
+    const {fs} = usePuterStore();
+    const [imageUrl,setImageUrl] = useState('')
 
-    useEffect(()=>{
-        const loadResumes = async()=>{
-            setLoadingResume(true)
-
-            const resumes = (await kv.list('resume:*', true)) as KVItem[];
-
-            const parsedResumes = resumes?.map((resume)=>{
-               return JSON.parse(resume.value) as Resume;
-            })
-            setResumes(parsedResumes || [] );
-            setLoadingResume(false);
-        }
-        loadResumes();
-    },[])
-
-  useEffect(()=>{
-    const loadResume: ()=> Promise<void> = async()=>{
-    const blob = await fs.read(resume.imagePath);
-    if(!blob) return;
-    let url:string = URL.createObjectURL(blob)
-    setResumeUrl(url)
-    }
-    loadResume();
- },[resume.imagePath])
+    useEffect(() => {
+    const loadImage = async () => {
+      const blob = await fs.read(resume.imagePath);
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      setImageUrl(url);
+    };
+    loadImage();
+    // Cleanup URL to prevent memory leaks
+    return () => { if(imageUrl) URL.revokeObjectURL(imageUrl) };
+  }, [resume.imagePath]);
 
   return (
     <Link to={`/resume/${resume.id}`} className='resume-card animate-in fade-in duration-1000ms'>
@@ -52,10 +37,10 @@ const ResumeCard = ({resume} : {resume: Resume}) => {
             <ScoreCircle score={resume.feedback.overallScore} />
          </div>
     </div>
-      {resumeUrl && <div className='gradient-border animate-in fade-in duration-1000'>
+      {imageUrl && <div className='gradient-border animate-in fade-in duration-1000'>
             <div className='w-full h-full'>
                 <img
-                    src={resume.imagePath}
+                    src={imageUrl}
                     alt="resume"
                     className='w-full h-[350px] max-sm:h-[200px] object-cover object-top'
                 />
