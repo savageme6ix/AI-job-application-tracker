@@ -6,7 +6,7 @@ import FileUploader from "~/Components/FileUploader";
 import { useNavigate } from "react-router";
 import { convertPdfToImage } from "~/lib/pdftoImage";
 import { generateUUID } from "~/lib/utils";
-import { prepareInstructions } from "constants";
+import { prepareInstructions } from "../../Constants";
 
 export function meta({}: Route.MetaArgs) {
   return [
