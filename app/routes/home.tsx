@@ -1,10 +1,10 @@
 import type { Route } from "./+types/home";
 import Navbar from "~/Components/Navbar";
 import ResumeCard from "~/Components/ResumeCard";
-import {resumes} from "../../constants";
+
 import { usePuterStore } from "~/lib/puter";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
@@ -37,11 +37,15 @@ export default function Home() {
     <section className="main-section">
       <div className="page-heading py-16">
         <h1>Track your Applications & Resume Rating</h1>
-        <h2>Review your submissions and check AI-powered feedback</h2>
+        {!loadingResumes && resumes?.length === 0 ? (
+             <h2>No resumes found. Upload your first resume to get feedback.</h2>
+        ) :(
+           <h2>Review your submissions and check AI-powered feedback</h2>
+        )}
       </div>
     
 
-    {resumes.length > 0 && (
+    {!isLoadingResumes && resumes.length > 0 && (
       <div className="resumes-section">
         {resumes.map((resume)=>(
            <ResumeCard key={resume.id} resume={resume}/>

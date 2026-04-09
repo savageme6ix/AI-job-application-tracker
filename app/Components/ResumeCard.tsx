@@ -14,7 +14,7 @@ const ResumeCard = ({resume} : {resume: Resume}) => {
         const loadResumes = async()=>{
             setLoadingResume(true)
 
-            const resumes = (await kv.list('resumes:*', true)) as KVItem[];
+            const resumes = (await kv.list('resume:*', true)) as KVItem[];
 
             const parsedResumes = resumes?.map((resume)=>{
                return JSON.parse(resume.value) as Resume;
