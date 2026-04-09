@@ -35,6 +35,7 @@ useEffect(() => {
     try {
       const list = (await kv.list('resume:*', true)) as KVItem[];
       const parsed = list.map(item => JSON.parse(item.value) as Resume);
+      console.log(parsed)
       setResumes(parsed);
     } catch (e) {
       console.error(e);
@@ -66,7 +67,7 @@ useEffect(() => {
         </div>
       )}
 
-    {LoadingResumes && resumes.length > 0 && (
+    {!LoadingResumes && resumes.length > 0 && (
       <div className="resumes-section">
         {resumes.map((resume)=>(
            <ResumeCard key={resume.id} resume={resume}/>
