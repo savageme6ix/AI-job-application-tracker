@@ -16,8 +16,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   //if user is in the home page and isnt authenticated
   //send them to the login page and the back aftr
-  const auth = usePuterStore((state) => state.auth);
-  const fs = usePuterStore((state) => state.auth);
+  const {auth,fs} = usePuterStore();
   const isLoading = usePuterStore((state)=> state.isLoading);
   const navigate = useNavigate();
 
@@ -27,7 +26,7 @@ export default function Home() {
 
   useEffect(()=>{
     const loadResume: ()=> Promise<void> = async()=>{
-
+      const blob = await fs.read(resume.imagePath);
     }
     loadResume();
   })
