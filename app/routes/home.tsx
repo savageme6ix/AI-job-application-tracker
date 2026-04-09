@@ -17,12 +17,20 @@ export default function Home() {
   //if user is in the home page and isnt authenticated
   //send them to the login page and the back aftr
   const auth = usePuterStore((state) => state.auth);
+  const fs = usePuterStore((state) => state.auth);
   const isLoading = usePuterStore((state)=> state.isLoading);
   const navigate = useNavigate();
 
   useEffect(()=>{
     if(!isLoading && !auth.isAuthenticated) navigate('/auth?next=/')
   },[auth.isAuthenticated, navigate, isLoading]);
+
+  useEffect(()=>{
+    const loadResume: ()=> Promise<void> = async()=>{
+
+    }
+    loadResume();
+  })
   
   if(isLoading){
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
