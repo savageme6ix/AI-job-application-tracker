@@ -5,6 +5,7 @@ import {resumes} from "../../constants";
 import { usePuterStore } from "~/lib/puter";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
+import { useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -19,6 +20,7 @@ export default function Home() {
   const {auth,fs} = usePuterStore();
   const isLoading = usePuterStore((state)=> state.isLoading);
   const navigate = useNavigate();
+  const [resumeUrl, setResumeUrl] = useState('')
 
   useEffect(()=>{
     if(!isLoading && !auth.isAuthenticated) navigate('/auth?next=/')
@@ -27,9 +29,12 @@ export default function Home() {
   useEffect(()=>{
     const loadResume: ()=> Promise<void> = async()=>{
       const blob = await fs.read(resume.imagePath);
+      if(!blob) return;
+      let url:string = URL.createObjectURL(blob)
+      setResumeUrl(url)
     }
     loadResume();
-  })
+  },[resume.imagePath])
   
   if(isLoading){
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
