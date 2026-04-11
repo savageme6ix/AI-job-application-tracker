@@ -1,5 +1,6 @@
 RESUMIND 
 AI-Powered Applicant Tracking System
+
 Resumind is a modern web application designed to help job seekers analyze their resumes against job descriptions. Built using React Router v7 and powered by the Puter.js SDK, it leverages AI for scoring, decentralized storage for file management, and a high-performance frontend hosted on Vercel.
 
 🛠 Tech Stack
