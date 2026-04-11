@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { Route } from "./+types/auth";
 import { usePuterStore } from "~/lib/puter";
 import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -22,7 +23,13 @@ const Auth = () => {
   },[auth.isAuthenticated, next])
 
   return (
+    <div>
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
+    {auth.isAuthenticated && (
+    <Link to="/" className="absolute top-10 right-10 primary-button px-6 py-2 w-fit">
+      Home
+    </Link>
+  )}
       <div className="gradient-border shadow-lg">
           <section className="flex flex-col gap-8 bg-white rounded-2xl p-10">
               <div className="flex flex-col items-center gap-2 text-center">
@@ -50,7 +57,10 @@ const Auth = () => {
               </div>
           </section>
       </div>
+      
     </main>
+    
+    </div>
   )
 }
 
