@@ -34,9 +34,13 @@ const Resume = () => {
 
       const data = JSON.parse(resume);
 
+      // This data doesnt contain the data we want itself, only a path where the items are stored on puter
       const resumeBlob = await fs.read(data.resumePath);
       if(!resumeBlob) return;
 
+      // The browser cannot display raw binary data directly. It needs a web address
+      // new Blob(...): You explicitly tell the browser, "This pile of bytes is a PDF."
+      // creates a temporary, local URL (starting with blob:http://...)
       const pdfBlob = new Blob([resumeBlob], {type: 'application/pdf'});
       const resumeURL = URL.createObjectURL(pdfBlob);
       setResumeUrl(resumeURL);
@@ -49,6 +53,11 @@ const Resume = () => {
       setFeedback(data.feedback)
     }
     loadResume();
+
+    return () => {
+    if (resumeUrl) URL.revokeObjectURL(resumeUrl);
+    if (imageUrl) URL.revokeObjectURL(imageUrl);
+  };
   },[id])
 
   return (

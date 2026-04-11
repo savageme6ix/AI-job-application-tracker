@@ -40,8 +40,8 @@ useEffect(() => {
     } catch (e) {
       console.error(e);
     } finally {
-      setLoadingResumes(false);
-    }
+        setLoadingResumes(false);
+      }
   };
   fetchResumes();
 }, [kv]);
