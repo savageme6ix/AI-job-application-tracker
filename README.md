@@ -1,87 +1,35 @@
-# Welcome to React Router!
+RESUMIND 
+AI-Powered Applicant Tracking System
+Resumind is a modern web application designed to help job seekers analyze their resumes against job descriptions. Built using React Router v7 and powered by the Puter.js SDK, it leverages AI for scoring, decentralized storage for file management, and a high-performance frontend hosted on Vercel.
 
-A modern, production-ready template for building full-stack React applications using React Router.
+🛠 Tech Stack
+Frontend: React Router v7 
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Styling: Tailwind CSS 
 
-## Features
+State Management: Zustand
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+Backend-as-a-Service: Puter.js v2 (Auth, KV Store, and File System)
 
-## Getting Started
+AI Engine: Puter AI (Claude-3.5-Sonnet integration)
 
-### Installation
+Deployment: Vercel (Production) & Puter Hosting (Static)
 
-Install the dependencies:
+✨ Features
+AI Resume Scoring: Instant feedback on resume strength and job alignment.
 
-```bash
-npm install
-```
+Decentralized Storage: Uses Puter's global file system to store and retrieve PDFs and images.
 
-### Development
+Persistence: A custom Key-Value (KV) implementation to manage user resume history.
 
-Start the development server with HMR:
+Responsive Design: Optimized for desktop and mobile.
 
-```bash
-npm run dev
-```
+🧩 Architecture
+The project follows a Zero-Server architecture. All backend logic (Storage, Database, Auth, and AI) is handled directly through the Puter.js SDK from the client side.
 
-Your application will be available at `http://localhost:5173`.
+lib/puter.ts: Handles the singleton initialization of the Puter SDK.
 
-## Building for Production
+store/usePuterStore.ts: A Zustand store that acts as the bridge between the React UI and Puter's cloud services.
 
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+routes/resume-details.tsx: Uses useParams and useEffect to hydrate resume data from the KV store and File System via Blob URLs.
+Authentication: Secure global login via Puter's identity provider.
